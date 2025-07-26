@@ -97,17 +97,21 @@ elif 2 <= st.session_state.step <= max_step - 1:
         st.image(f"{image_folder}/{current_image}",
                  caption=f"Comic {item_index + 1}")
         st.markdown("**Bitte beschreiben Sie den Inhalt des Comics in einem Satz:**")
-        text_input = st.text_input("Ihre Beschreibung:",
-                                   key=f"text_{item_index}")
+        text_input = st.text_input("Ihre Beschreibung:", key=f"text_{item_index}")
 
         if st.button("Weiter"):
             if text_input.strip() == "":
                 st.warning("Bitte geben Sie eine Beschreibung ein, bevor Sie fortfahren.")
             else:
-                st.session_state.responses.append({
-                    "comic": current_image,
-                    "beschreibung": text_input.strip()
-                })
+                # Stelle sicher, dass responses immer korrekt gefüllt ist
+                if len(st.session_state.responses) <= item_index:
+                    st.session_state.responses.append({
+                        "comic": current_image,
+                        "beschreibung": text_input.strip()
+                    })
+                else:
+                    st.session_state.responses[item_index]["beschreibung"] = text_input.strip()
+
                 st.session_state.step += 1
                 st.rerun()
 
@@ -151,37 +155,57 @@ elif 2 <= st.session_state.step <= max_step - 1:
             else:
                 st.error("Die Beschreibung fehlt. Bitte zurückgehen und zuerst die Seite davor ausfüllen.")
 
-# === Ergebnisse an GitHub senden + Danke
+# === Ergebnisse an GitHub anhängen + Danke
 elif st.session_state.step >= max_step:
     token = st.secrets["github"]["token"]
     repo = "elisabz/comic_experiment"
     branch = "main"
-    filename = f"Results/{st.session_state.vp_nummer}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+    filename = "Results/responses.csv"
 
-    output_lines = ["timestamp,vp_nummer,englisch_level,gruppe,comic_index,filename,antwort,frage1,frage2,frage3,startzeit"]
+    # Neue Daten vorbereiten
+    output_lines = []
     for row in st.session_state.antworten:
         output_lines.append(",".join(map(str, row)))
+    new_content = "\n".join(output_lines) + "\n"
 
-    output_csv = "\n".join(output_lines)
-    encoded_content = base64.b64encode(output_csv.encode("utf-8")).decode("utf-8")
-
+    # Datei auf GitHub abrufen
     api_url = f"https://api.github.com/repos/{repo}/contents/{filename}"
     headers = {
         "Authorization": f"token {token}",
         "Accept": "application/vnd.github+json"
     }
+
+    get_response = requests.get(api_url, headers=headers)
+
+    if get_response.status_code == 200:
+        existing = get_response.json()
+        existing_content = base64.b64decode(existing['content']).decode('utf-8')
+        combined_content = existing_content.strip() + "\n" + new_content
+        sha = existing['sha']
+    elif get_response.status_code == 404:
+        # Datei existiert noch nicht → neue Datei mit Header
+        combined_content = "timestamp,vp_nummer,englisch_level,gruppe,comic_index,filename,antwort,frage1,frage2,frage3,startzeit\n" + new_content
+        sha = None
+    else:
+        st.error(f"Fehler beim Abrufen der Datei: {get_response.status_code}")
+        st.stop()
+
+    # Datei aktualisieren oder neu anlegen
+    encoded_content = base64.b64encode(combined_content.encode("utf-8")).decode("utf-8")
     data = {
-        "message": f"Add response file {filename}",
+        "message": f"Update responses with {st.session_state.vp_nummer}",
         "content": encoded_content,
         "branch": branch
     }
+    if sha:
+        data["sha"] = sha
 
-    response = requests.put(api_url, headers=headers, json=data)
+    put_response = requests.put(api_url, headers=headers, json=data)
 
-    if response.status_code == 201:
+    if put_response.status_code in [200, 201]:
         st.success("Ihre Antworten wurden erfolgreich übermittelt.")
     else:
-        st.error(f"Upload fehlgeschlagen. Fehlercode: {response.status_code}")
+        st.error(f"Upload fehlgeschlagen. Fehlercode: {put_response.status_code}")
 
     st.markdown("## 🎉 Vielen Dank für Ihre Teilnahme!")
     st.markdown("Sie können das Fenster nun schließen.")
