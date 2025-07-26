@@ -58,10 +58,9 @@ st.title("Comic-Experiment")
 if st.session_state.step == 0:
     st.markdown("## Willkommen zum Comic-Experiment")
     st.markdown("""
-    In diesem Experiment werden Sie Comic-Seiten sehen  
-    und danach jeweils kurze Fragen beantworten.
+    In diesem Experiment werden Sie verschiedene Comic-Seiten sehen und danach jeweils kurze Fragen beantworten.
 
-    Bitte lesen Sie die Inhalte aufmerksam – Ihre Teilnahme hilft der Forschung.
+    Bitte lesen Sie die Inhalte aufmerksam und beantworten Sie die Fragen aufrichtig.
     """)
     st.image("images/beispiel.jpg", caption="Beispielcomic (nicht Teil des Experiments)")
     if st.button("Weiter"):
@@ -93,16 +92,25 @@ elif 2 <= st.session_state.step <= max_step - 1:
 
     # === Ungerade Schritte: Comic + Freitext
     if st.session_state.step % 2 == 0:
-        st.image(f"{image_folder}/{current_image}", caption=f"Comic {item_index + 1}")
-        st.markdown("**Bitte beschreiben Sie den Inhalt des Comics in einem Satz:**")
-        text_input = st.text_input("Ihre Beschreibung:", key=f"text_{item_index}")
+        st.image(f"{image_folder}/{current_image}",
+                 caption=f"Comic {item_index + 1}")
+        st.markdown(
+            "**Bitte beschreiben Sie den Inhalt des Comics in einem Satz:**")
+        text_input = st.text_input("Ihre Beschreibung:",
+                                   key=f"text_{item_index}")
+
         if st.button("Weiter"):
-            st.session_state.responses.append({
-                "comic": current_image,
-                "beschreibung": text_input
-            })
-            st.session_state.step += 1
-            st.rerun()
+            if text_input.strip() == "":
+                st.error(
+                    "⚠️ Bitte geben Sie eine Beschreibung ein, bevor Sie fortfahren.")
+            else:
+                st.session_state.responses.append({
+                    "comic": current_image,
+                    "beschreibung": text_input.strip()
+                })
+                st.session_state.step += 1
+                st.rerun()
+
 
     # === Gerade Schritte: Likert-Skalenfragen
     else:
