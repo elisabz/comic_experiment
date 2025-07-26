@@ -36,35 +36,39 @@ if "antworten" not in st.session_state:
 
 # === Bilddaten ===
 image_folder = "images"
-image_files = sorted([
-    f for f in os.listdir(image_folder)
-    if f.lower().endswith(".jpg") and f.startswith(f"{st.session_state.gruppe}_")
-])
+image_files = []
+
+if "gruppe" in st.session_state and st.session_state.step >= 2:
+    if os.path.exists(image_folder):
+        image_files = sorted([
+            f for f in os.listdir(image_folder)
+            if f.lower().endswith(".jpg") and f.startswith(f"{st.session_state.gruppe}_")
+        ])
+    else:
+        st.error("Der Ordner 'Images' fehlt. Bitte lade ihn ins Repository.")
+        st.stop()
 
 total_items = len(image_files)
-max_step = total_items * 2
+max_step = total_items * 2 + 1  # +1 wegen Englischfrage-Schritt
 
 # === App-Flow ===
 st.title("Comic-Experiment")
 
-# === Step 0: Einführung + Beispielbild ===
+# === Step 0: Einführung + Beispielbild
 if st.session_state.step == 0:
-    st.markdown("## Willkommen zum Comic-Experiment 🧪")
+    st.markdown("## Willkommen zum Comic-Experiment")
     st.markdown("""
-    In diesem Experiment werden Sie mehrere Comic-Seiten sehen  
-    und danach jeweils Fragen beantworten.  
+    In diesem Experiment werden Sie Comic-Seiten sehen  
+    und danach jeweils kurze Fragen beantworten.
 
-    Bitte lesen Sie die Inhalte aufmerksam.  
-    Ihre Antworten helfen uns bei der Forschung.  
+    Bitte lesen Sie die Inhalte aufmerksam – Ihre Teilnahme hilft der Forschung.
     """)
-
-    # st.image("Images/beispiel.jpg", caption="Beispielcomic (nicht Teil des Experiments)")
-
+    st.image("images/beispiel.jpg", caption="Beispielcomic (nicht Teil des Experiments)")
     if st.button("Weiter"):
         st.session_state.step += 1
         st.rerun()
 
-# === Step 1: Englischkenntnisse abfragen ===
+# === Step 1: Englischkenntnisse
 elif st.session_state.step == 1:
     st.markdown("### Bevor es losgeht: Sprachkenntnisse")
     english_level = st.selectbox(
@@ -77,10 +81,9 @@ elif st.session_state.step == 1:
         st.session_state.step += 1
         st.rerun()
 
-
-# === Comic- & Fragerunden ===
-elif 1 <= st.session_state.step <= max_step:
-    item_index = (st.session_state.step - 1) // 2
+# === Comic- & Fragerunden
+elif 2 <= st.session_state.step <= max_step - 1:
+    item_index = (st.session_state.step - 2) // 2
 
     if item_index >= len(image_files):
         st.error("Kein weiteres Bild verfügbar.")
@@ -89,9 +92,9 @@ elif 1 <= st.session_state.step <= max_step:
     current_image = image_files[item_index]
 
     # === Ungerade Schritte: Comic + Freitext
-    if st.session_state.step % 2 == 1:
-        st.image(os.path.join(image_folder, current_image), caption=f"Comic {item_index + 1}")
-        st.markdown("**Bitte beschreiben Sie kurz den Inhalt des Comics in einem Satz:**")
+    if st.session_state.step % 2 == 0:
+        st.image(f"{image_folder}/{current_image}", caption=f"Comic {item_index + 1}")
+        st.markdown("**Bitte beschreiben Sie den Inhalt des Comics in einem Satz:**")
         text_input = st.text_input("Ihre Beschreibung:", key=f"text_{item_index}")
         if st.button("Weiter"):
             st.session_state.responses.append({
@@ -121,7 +124,6 @@ elif 1 <= st.session_state.step <= max_step:
                 "langweilig": q3
             })
 
-            # Antworten sammeln
             antwort_row = [
                 datetime.now().isoformat(),
                 st.session_state.gruppe,
@@ -137,23 +139,11 @@ elif 1 <= st.session_state.step <= max_step:
             st.session_state.step += 1
             st.rerun()
 
-# === Ergebnisse an GitHub senden + Danke anzeigen ===
-if st.session_state.step > max_step and st.session_state.antworten:
-    # [Code zum Hochladen bleibt gleich...]
-    # ...
-    if response.status_code == 201:
-        st.success("✅ Ihre Antworten wurden erfolgreich übermittelt.")
-    else:
-        st.error("⚠️ Beim Hochladen der Antworten ist ein Fehler aufgetreten.")
-
-    # Danke-Nachricht
-    st.markdown("## 🎉 Vielen Dank für Ihre Teilnahme!")
-    st.markdown("Ihre Daten wurden gespeichert. Sie können das Fenster nun schließen.")
-
+# === Ergebnisse an GitHub senden + Danke
+elif st.session_state.step >= max_step:
     token = st.secrets["github"]["token"]
     repo = "elisabz/comic_experiment"
     branch = "main"
-
     filename = f"Results/group_{st.session_state.gruppe}_response_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
 
     output_lines = ["timestamp,gruppe,comic_index,filename,antwort,frage1,frage2,startzeit"]
@@ -177,5 +167,10 @@ if st.session_state.step > max_step and st.session_state.antworten:
     response = requests.put(api_url, headers=headers, json=data)
 
     if response.status_code == 201:
-        st.succes
+        st.success("Ihre Antworten wurden erfolgreich übermittelt.")
+    else:
+        st.error(f"Upload fehlgeschlagen. Fehlercode: {response.status_code}")
+
+    st.markdown("## 🎉 Vielen Dank für Ihre Teilnahme!")
+    st.markdown("Sie können das Fenster nun schließen.")
 
