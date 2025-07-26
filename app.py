@@ -33,6 +33,8 @@ if "gruppe" not in st.session_state:
     st.session_state.gruppe = assign_group()
 if "antworten" not in st.session_state:
     st.session_state.antworten = []
+if "vp_nummer" not in st.session_state:
+    st.session_state.vp_nummer = f"VP{random.randint(1000,9999)}"
 
 # === Bilddaten ===
 image_folder = "images"
@@ -90,19 +92,17 @@ elif 2 <= st.session_state.step <= max_step - 1:
 
     current_image = image_files[item_index]
 
-    # === Ungerade Schritte: Comic + Freitext
+    # === Gerade Schritte: Comic + Freitext
     if st.session_state.step % 2 == 0:
         st.image(f"{image_folder}/{current_image}",
                  caption=f"Comic {item_index + 1}")
-        st.markdown(
-            "**Bitte beschreiben Sie den Inhalt des Comics in einem Satz:**")
+        st.markdown("**Bitte beschreiben Sie den Inhalt des Comics in einem Satz:**")
         text_input = st.text_input("Ihre Beschreibung:",
                                    key=f"text_{item_index}")
 
         if st.button("Weiter"):
             if text_input.strip() == "":
-                st.warning(
-                    "Bitte geben Sie eine Beschreibung ein, bevor Sie fortfahren.")
+                st.warning("Bitte geben Sie eine Beschreibung ein, bevor Sie fortfahren.")
             else:
                 st.session_state.responses.append({
                     "comic": current_image,
@@ -111,9 +111,7 @@ elif 2 <= st.session_state.step <= max_step - 1:
                 st.session_state.step += 1
                 st.rerun()
 
-
-
-    # === Gerade Schritte: Likert-Skalenfragen
+    # === Ungerade Schritte: Likert-Skalenfragen
     else:
         st.markdown("**Bitte bewerten Sie den Comic:**")
 
@@ -136,12 +134,15 @@ elif 2 <= st.session_state.step <= max_step - 1:
 
                 antwort_row = [
                     datetime.now().isoformat(),
+                    st.session_state.vp_nummer,
+                    st.session_state.english_level,
                     st.session_state.gruppe,
                     item_index + 1,
                     current_image,
                     st.session_state.responses[item_index].get("beschreibung", ""),
                     q1,
                     q2,
+                    q3,
                     st.session_state.startzeit
                 ]
                 st.session_state.antworten.append(antwort_row)
@@ -155,9 +156,9 @@ elif st.session_state.step >= max_step:
     token = st.secrets["github"]["token"]
     repo = "elisabz/comic_experiment"
     branch = "main"
-    filename = f"Results/group_{st.session_state.gruppe}_response_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+    filename = f"Results/{st.session_state.vp_nummer}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
 
-    output_lines = ["timestamp,gruppe,comic_index,filename,antwort,frage1,frage2,startzeit"]
+    output_lines = ["timestamp,vp_nummer,englisch_level,gruppe,comic_index,filename,antwort,frage1,frage2,frage3,startzeit"]
     for row in st.session_state.antworten:
         output_lines.append(",".join(map(str, row)))
 
