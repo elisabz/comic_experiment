@@ -35,7 +35,7 @@ if "antworten" not in st.session_state:
     st.session_state.antworten = []
 
 # === Bilddaten ===
-image_folder = "Images"
+image_folder = "images"
 image_files = sorted([
     f for f in os.listdir(image_folder)
     if f.lower().endswith(".jpg") and f.startswith(f"{st.session_state.gruppe}_")
