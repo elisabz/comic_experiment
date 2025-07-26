@@ -118,26 +118,28 @@ elif 2 <= st.session_state.step <= max_step - 1:
                       ["1 (Gar nicht)", "2", "3", "4", "5 (Sehr)"],
                       key=f"q3_{item_index}")
         if st.button("Weiter"):
-            st.session_state.responses[-1].update({
-                "verständlichkeit": q1,
-                "geschwindigkeit": q2,
-                "langweilig": q3
-            })
+            if len(st.session_state.responses) > item_index:
+                st.session_state.responses[item_index].update({
+                    "verständlichkeit": q1,
+                    "geschwindigkeit": q2,
+                    "langweilig": q3
+                })
 
-            antwort_row = [
-                datetime.now().isoformat(),
-                st.session_state.gruppe,
-                item_index + 1,
-                current_image,
-                st.session_state.responses[-1].get("beschreibung", ""),
-                q1,
-                q2,
-                st.session_state.startzeit
-            ]
-            st.session_state.antworten.append(antwort_row)
-
-            st.session_state.step += 1
-            st.rerun()
+                antwort_row = [
+                    datetime.now().isoformat(),
+                    st.session_state.gruppe,
+                    item_index + 1,
+                    current_image,
+                    st.session_state.responses[item_index].get("beschreibung", ""),
+                    q1,
+                    q2,
+                    st.session_state.startzeit
+                ]
+                st.session_state.antworten.append(antwort_row)
+                st.session_state.step += 1
+                st.rerun()
+            else:
+                st.error("Die Beschreibung fehlt. Bitte zurückgehen und zuerst die Seite davor ausfüllen.")
 
 # === Ergebnisse an GitHub senden + Danke
 elif st.session_state.step >= max_step:
