@@ -45,7 +45,7 @@ if "gruppe" in st.session_state and st.session_state.step >= 2:
             if f.lower().endswith(".jpg") and f.startswith(f"{st.session_state.gruppe}_")
         ])
     else:
-        st.error("Der Ordner 'Images' fehlt. Bitte lade ihn ins Repository.")
+        st.error("Der Ordner 'images' fehlt. Bitte lade ihn ins Repository.")
         st.stop()
 
 total_items = len(image_files)
@@ -101,8 +101,8 @@ elif 2 <= st.session_state.step <= max_step - 1:
 
         if st.button("Weiter"):
             if text_input.strip() == "":
-                st.error(
-                    "⚠️ Bitte geben Sie eine Beschreibung ein, bevor Sie fortfahren.")
+                st.warning(
+                    "Bitte geben Sie eine Beschreibung ein, bevor Sie fortfahren.")
             else:
                 st.session_state.responses.append({
                     "comic": current_image,
@@ -110,6 +110,7 @@ elif 2 <= st.session_state.step <= max_step - 1:
                 })
                 st.session_state.step += 1
                 st.rerun()
+
 
 
     # === Gerade Schritte: Likert-Skalenfragen
