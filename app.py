@@ -117,6 +117,12 @@ elif 2 <= st.session_state.step <= max_step - 1:
 
     # === Ungerade Schritte: Likert-Skalenfragen
     else:
+        if len(st.session_state.responses) <= item_index: # todo: fehlerbehebung likert 2 existiert nicht
+            st.session_state.responses.append({
+                "comic": current_image,
+                "beschreibung": ""
+            })
+
         st.markdown("**Bitte bewerten Sie den Comic:**")
 
         q1 = st.radio("War der Comic inhaltlich verständlich?",
