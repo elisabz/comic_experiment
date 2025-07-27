@@ -74,21 +74,20 @@ if st.session_state.step == 0:
     In diesem Experiment werden Sie verschiedene Comic-Seiten sehen und danach jeweils kurze Fragen beantworten.
 
     Bitte lesen Sie die Inhalte aufmerksam und beantworten Sie die Fragen aufrichtig.
+    
+    Hier sehen Sie ein Beispiel, wie das Experiement aussieht:
     """)
     st.image("images/beispiel.png", caption="Beispielcomic (nicht Teil des Experiments)")
-    st.markdown("""
-    Die Aufgaben, die Sie zu jedem Comic bekommen sind folgende:
     
-    Bitte beschreiben Sie den Inhalt des Comics in einem Satz.
+    st.markdown("""Bitte beschreiben Sie den Inhalt des Comics in einem Satz.""")
     
-    War der Comic inhaltlich verständlich?
+    st.markdown("""War der Comic inhaltlich verständlich?""")
     
-    Wie schnell konnten Sie den Comic verstehen?
+    st.markdown("""Wie schnell konnten Sie den Comic verstehen?""")
     
-    Waren Sie während des Lesens gelangweilt?
+    st.markdown("""Waren Sie während des Lesens gelangweilt?""")
     
-    Wie spannend fanden Sie den Comic?
-    """)
+    st.markdown("""Wie spannend fanden Sie den Comic?""")
     if st.button("Weiter"):
         st.session_state.step += 1
         st.rerun()
@@ -150,7 +149,7 @@ elif 2 <= st.session_state.step <= max_step - 1:
         q2 = st.radio("Wie schnell konnten Sie den Comic verstehen?",
                       ["1 (Sehr langsam)", "2", "3", "4", "5 (Sehr schnell)"],
                       key=f"q2_{item_index}")
-        q3 = st.radio("Waren Sie waährend des Lesens gelangweilt?",
+        q3 = st.radio("Waren Sie während des Lesens gelangweilt?",
                       ["1 (Gar nicht)", "2", "3", "4", "5 (Sehr)"],
                       key=f"q3_{item_index}")
         q4 = st.radio("Wie spannend fanden Sie den Comic?",
