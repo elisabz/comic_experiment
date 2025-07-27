@@ -69,13 +69,13 @@ st.title("Comic-Experiment")
 
 # === Step 0: Einführung + Beispielbild
 if st.session_state.step == 0:
-    st.markdown("## Willkommen zum Comic-Experiment")
+    st.markdown("## Willkommen zum Experiment")
     st.markdown("""
     In diesem Experiment werden Sie verschiedene Comic-Seiten sehen und danach jeweils kurze Fragen beantworten.
 
     Bitte lesen Sie die Inhalte aufmerksam und beantworten Sie die Fragen aufrichtig.
     
-    Hier sehen Sie ein Beispiel, wie das Experiement aussieht:
+    Hier sehen Sie ein Beispiel, wie das Experiement und die gestellten Fragen aussehen:
     """)
     st.image("images/beispiel.png", caption="Beispielcomic (nicht Teil des Experiments)")
     
