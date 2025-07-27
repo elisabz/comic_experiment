@@ -36,6 +36,17 @@ if "antworten" not in st.session_state:
 if "vp_nummer" not in st.session_state:
     st.session_state.vp_nummer = f"VP{random.randint(1000,9999)}"
 
+# === Hilfsfunktion zum Initialisieren von Responses ===
+def ensure_response_index(idx, current_image):
+    while len(st.session_state.responses) <= idx:
+        st.session_state.responses.append({
+            "comic": current_image,
+            "beschreibung": "",
+            "verständlichkeit": "",
+            "geschwindigkeit": "",
+            "langweilig": ""
+        })
+
 # === Bilddaten ===
 image_folder = "images"
 image_files = []
@@ -103,27 +114,16 @@ elif 2 <= st.session_state.step <= max_step - 1:
             if text_input.strip() == "":
                 st.warning("Bitte geben Sie eine Beschreibung ein, bevor Sie fortfahren.")
             else:
-                # Stelle sicher, dass responses immer korrekt gefüllt ist
-                if len(st.session_state.responses) <= item_index:
-                    st.session_state.responses.append({
-                        "comic": current_image,
-                        "beschreibung": text_input.strip()
-                    })
-                else:
-                    st.session_state.responses[item_index]["beschreibung"] = text_input.strip()
-
+                ensure_response_index(item_index, current_image)
+                st.session_state.responses[item_index]["beschreibung"] = text_input.strip()
                 st.session_state.step += 1
                 st.rerun()
 
     # === Ungerade Schritte: Likert-Skalenfragen
     else:
-        if len(st.session_state.responses) <= item_index: # todo: fehlerbehebung likert 2 existiert nicht
-            st.session_state.responses.append({
-                "comic": current_image,
-                "beschreibung": ""
-            })
-
         st.markdown("**Bitte bewerten Sie den Comic:**")
+
+        ensure_response_index(item_index, current_image)
 
         q1 = st.radio("War der Comic inhaltlich verständlich?",
                       ["1 (Stimme überhaupt nicht zu)", "2", "3", "4", "5 (Stimme voll zu)"],
@@ -135,31 +135,28 @@ elif 2 <= st.session_state.step <= max_step - 1:
                       ["1 (Gar nicht)", "2", "3", "4", "5 (Sehr)"],
                       key=f"q3_{item_index}")
         if st.button("Weiter"):
-            if len(st.session_state.responses) > item_index:
-                st.session_state.responses[item_index].update({
-                    "verständlichkeit": q1,
-                    "geschwindigkeit": q2,
-                    "langweilig": q3
-                })
+            st.session_state.responses[item_index].update({
+                "verständlichkeit": q1,
+                "geschwindigkeit": q2,
+                "langweilig": q3
+            })
 
-                antwort_row = [
-                    datetime.now().isoformat(),
-                    st.session_state.vp_nummer,
-                    st.session_state.english_level,
-                    st.session_state.gruppe,
-                    item_index + 1,
-                    current_image,
-                    st.session_state.responses[item_index].get("beschreibung", ""),
-                    q1,
-                    q2,
-                    q3,
-                    st.session_state.startzeit
-                ]
-                st.session_state.antworten.append(antwort_row)
-                st.session_state.step += 1
-                st.rerun()
-            else:
-                st.error("Die Beschreibung fehlt. Bitte zurückgehen und zuerst die Seite davor ausfüllen.")
+            antwort_row = [
+                datetime.now().isoformat(),
+                st.session_state.vp_nummer,
+                st.session_state.english_level,
+                st.session_state.gruppe,
+                item_index + 1,
+                current_image,
+                st.session_state.responses[item_index].get("beschreibung", ""),
+                q1,
+                q2,
+                q3,
+                st.session_state.startzeit
+            ]
+            st.session_state.antworten.append(antwort_row)
+            st.session_state.step += 1
+            st.rerun()
 
 # === Ergebnisse an GitHub anhängen + Danke
 elif st.session_state.step >= max_step:
@@ -215,4 +212,3 @@ elif st.session_state.step >= max_step:
 
     st.markdown("## 🎉 Vielen Dank für Ihre Teilnahme!")
     st.markdown("Sie können das Fenster nun schließen.")
-
