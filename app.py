@@ -62,7 +62,7 @@ if "gruppe" in st.session_state and st.session_state.step >= 2:
         st.stop()
 
 total_items = len(image_files)
-max_step = total_items * 2 + 1  # +1 wegen Englischfrage-Schritt
+max_step = total_items * 2 + 2  # +1 wegen Englischfrage-Schritt
 
 # === App-Flow ===
 st.title("Comic-Experiment")
