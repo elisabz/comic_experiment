@@ -76,6 +76,14 @@ if st.session_state.step == 0:
     Bitte lesen Sie die Inhalte aufmerksam und beantworten Sie die Fragen aufrichtig.
     """)
     st.image("images/beispiel.jpg", caption="Beispielcomic (nicht Teil des Experiments)")
+    st.markdown("""
+    Die Aufgaben, die Sie zu jedem Comic bekommen sind folgende:
+    Bitte beschreiben Sie den Inhalt des Comics in einem Satz.
+    War der Comic inhaltlich verständlich?
+    Wie schnell konnten Sie den Comic verstehen?
+    Waren Sie während des Lesens gelangweilt?
+    Wie spannend fanden Sie den Comic?
+    """)
     if st.button("Weiter"):
         st.session_state.step += 1
         st.rerun()
@@ -125,20 +133,27 @@ elif 2 <= st.session_state.step <= max_step - 1:
 
         ensure_response_index(item_index, current_image)
 
+        q0 = st.selectbox( "Kennen Sie diese Comic-Seite?",
+             ["Ja", "Nein"])
         q1 = st.radio("War der Comic inhaltlich verständlich?",
                       ["1 (Stimme überhaupt nicht zu)", "2", "3", "4", "5 (Stimme voll zu)"],
                       key=f"q1_{item_index}")
         q2 = st.radio("Wie schnell konnten Sie den Comic verstehen?",
                       ["1 (Sehr langsam)", "2", "3", "4", "5 (Sehr schnell)"],
                       key=f"q2_{item_index}")
-        q3 = st.radio("Waren Sie gelangweilt?",
+        q3 = st.radio("Waren Sie waährend des Lesens gelangweilt?",
+                      ["1 (Gar nicht)", "2", "3", "4", "5 (Sehr)"],
+                      key=f"q3_{item_index}")
+        q4 = st.radio("Wie spannend fanden Sie den Comic?",
                       ["1 (Gar nicht)", "2", "3", "4", "5 (Sehr)"],
                       key=f"q3_{item_index}")
         if st.button("Weiter"):
             st.session_state.responses[item_index].update({
+                "bekanntheit": q0,
                 "verständlichkeit": q1,
                 "geschwindigkeit": q2,
-                "langweilig": q3
+                "langeweile": q3,
+                "spannung": q4
             })
 
             antwort_row = [
@@ -149,9 +164,11 @@ elif 2 <= st.session_state.step <= max_step - 1:
                 item_index + 1,
                 current_image,
                 st.session_state.responses[item_index].get("beschreibung", ""),
+                q0,
                 q1,
                 q2,
                 q3,
+                q4,
                 st.session_state.startzeit
             ]
             st.session_state.antworten.append(antwort_row)
