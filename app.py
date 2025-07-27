@@ -41,10 +41,13 @@ def ensure_response_index(idx, current_image):
     while len(st.session_state.responses) <= idx:
         st.session_state.responses.append({
             "comic": current_image,
+            "bekanntheit": "",
             "beschreibung": "",
             "verständlichkeit": "",
             "geschwindigkeit": "",
-            "langweilig": ""
+            "langeweile": "",
+            "spannung": "",
+            "visuell": ""
         })
 
 # === Bilddaten ===
@@ -155,12 +158,16 @@ elif 2 <= st.session_state.step <= max_step - 1:
         q4 = st.radio("Wie spannend fanden Sie den Comic?",
                       ["1 (Gar nicht)", "2", "3", "4", "5 (Sehr)"],
                       key=f"q4_{item_index}")
+        q5 = st.radio("Fanden Sie den Comic visuell ansprechend?",
+                      ["1 (Gar nicht), 2, 3, 4, 5 (Sehr)"])
+
         if st.button("Weiter"):
             st.session_state.responses[item_index].update({
                 "verständlichkeit": q1,
                 "geschwindigkeit": q2,
                 "langeweile": q3,
-                "spannung": q4
+                "spannung": q4,
+                "visuell": q5
             })
 
             antwort_row = [
@@ -175,6 +182,7 @@ elif 2 <= st.session_state.step <= max_step - 1:
                 q2,
                 q3,
                 q4,
+                q5,
                 st.session_state.startzeit
             ]
             st.session_state.antworten.append(antwort_row)
@@ -210,7 +218,7 @@ elif st.session_state.step >= max_step:
         sha = existing['sha']
     elif get_response.status_code == 404:
         # Datei existiert noch nicht → neue Datei mit Header
-        combined_content = "timestamp,vp_nummer,englisch_level,gruppe,comic_index,filename,antwort,frage1,frage2,frage3,startzeit\n" + new_content
+        combined_content = "timestamp; vp_nummer; englisch_level; gruppe; comic_index; filename; bekanntheit; inhalt; verständlichkeit; geschwindigkeit; langeweile; spannung; visuell; startzeit\n" + new_content
         sha = None
     else:
         st.error(f"Fehler beim Abrufen der Datei: {get_response.status_code}")
