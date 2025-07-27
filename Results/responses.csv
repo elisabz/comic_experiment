@@ -21,3 +21,9 @@ timestamp,vp_nummer,englisch_level,gruppe,comic_index,filename,antwort,frage1,fr
 2025-07-27T19:32:34.010547,VP8170,Sehr gut,C,4,C_comic4.png,D,Ja,1 (Stimme überhaupt nicht zu),1 (Sehr langsam),1 (Gar nicht),1 (Gar nicht),2025-07-27T19:30:28.952070
 2025-07-27T19:32:48.472885,VP8170,Sehr gut,C,5,C_comic5.png,Ls,Ja,1 (Stimme überhaupt nicht zu),1 (Sehr langsam),1 (Gar nicht),1 (Gar nicht),2025-07-27T19:30:28.952070
 2025-07-27T19:32:57.532755,VP8170,Sehr gut,C,6,C_comic6.png,Osk,Ja,1 (Stimme überhaupt nicht zu),1 (Sehr langsam),1 (Gar nicht),1 (Gar nicht),2025-07-27T19:30:28.952070
+2025-07-27T20:44:35.525553,VP1618,Sehr gut,B,1,B_comic1.png,tty,5 (Stimme voll zu),3,3,4,2025-07-27T20:44:15.094688
+2025-07-27T20:44:50.027966,VP1618,Sehr gut,B,2,B_comic2.png,versuch,4,5 (Sehr schnell),4,4,2025-07-27T20:44:15.094688
+2025-07-27T20:45:07.062215,VP1618,Sehr gut,B,3,B_comic3.png,try,3,3,4,3,2025-07-27T20:44:15.094688
+2025-07-27T20:45:17.670301,VP1618,Sehr gut,B,4,B_comic4.png,try,3,3,3,3,2025-07-27T20:44:15.094688
+2025-07-27T20:46:22.545288,VP1618,Sehr gut,B,5,B_comic5.png,try,3,4,4,3,2025-07-27T20:44:15.094688
+2025-07-27T20:46:40.503483,VP1618,Sehr gut,B,6,B_comic6.png,try,4,3,3,3,2025-07-27T20:44:15.094688
