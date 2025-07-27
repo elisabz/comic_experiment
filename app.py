@@ -120,6 +120,11 @@ elif 2 <= st.session_state.step <= max_step - 1:
     if st.session_state.step % 2 == 0:
         st.image(f"{image_folder}/{current_image}",
                  caption=f"Comic {item_index + 1}")
+
+        q0 = st.selectbox("Kennen Sie diese Comic-Seite?",
+                          ["Nein", "Ja"],
+                          key=f"q0_{item_index}")
+
         st.markdown("**Bitte beschreiben Sie den Inhalt des Comics in einem Satz:**")
         text_input = st.text_input("Ihre Beschreibung:", key=f"text_{item_index}")
 
@@ -128,6 +133,7 @@ elif 2 <= st.session_state.step <= max_step - 1:
                 st.warning("Bitte geben Sie eine Beschreibung ein, bevor Sie fortfahren.")
             else:
                 ensure_response_index(item_index, current_image)
+                st.session_state.responses[item_index]["bekanntheit"] = q0
                 st.session_state.responses[item_index]["beschreibung"] = text_input.strip()
                 st.session_state.step += 1
                 st.rerun()
@@ -138,8 +144,6 @@ elif 2 <= st.session_state.step <= max_step - 1:
 
         ensure_response_index(item_index, current_image)
 
-        q0 = st.selectbox( "Kennen Sie diese Comic-Seite?",
-             ["Ja", "Nein"])
         q1 = st.radio("War der Comic inhaltlich verständlich?",
                       ["1 (Stimme überhaupt nicht zu)", "2", "3", "4", "5 (Stimme voll zu)"],
                       key=f"q1_{item_index}")
@@ -154,7 +158,6 @@ elif 2 <= st.session_state.step <= max_step - 1:
                       key=f"q4_{item_index}")
         if st.button("Weiter"):
             st.session_state.responses[item_index].update({
-                "bekanntheit": q0,
                 "verständlichkeit": q1,
                 "geschwindigkeit": q2,
                 "langeweile": q3,
@@ -169,7 +172,6 @@ elif 2 <= st.session_state.step <= max_step - 1:
                 item_index + 1,
                 current_image,
                 st.session_state.responses[item_index].get("beschreibung", ""),
-                q0,
                 q1,
                 q2,
                 q3,
