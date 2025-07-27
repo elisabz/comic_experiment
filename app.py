@@ -75,7 +75,7 @@ if st.session_state.step == 0:
 
     Bitte lesen Sie die Inhalte aufmerksam und beantworten Sie die Fragen aufrichtig.
     """)
-    #st.image("images/beispiel.png", caption="Beispielcomic (nicht Teil des Experiments)")
+    st.image("images/beispiel.png", caption="Beispielcomic (nicht Teil des Experiments)")
     st.markdown("""
     Die Aufgaben, die Sie zu jedem Comic bekommen sind folgende:
     
@@ -151,7 +151,7 @@ elif 2 <= st.session_state.step <= max_step - 1:
                       key=f"q3_{item_index}")
         q4 = st.radio("Wie spannend fanden Sie den Comic?",
                       ["1 (Gar nicht)", "2", "3", "4", "5 (Sehr)"],
-                      key=f"q3_{item_index}")
+                      key=f"q4_{item_index}")
         if st.button("Weiter"):
             st.session_state.responses[item_index].update({
                 "bekanntheit": q0,
