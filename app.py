@@ -222,7 +222,7 @@ elif st.session_state.step >= max_step:
     elif get_response.status_code == 404:
         # Datei existiert noch nicht → neue Datei mit Header
         combined_content = "timestamp; vp_nummer; englisch_level; gruppe; comic_index; filename; bekanntheit; inhalt; verständlichkeit; geschwindigkeit; langeweile; spannung; visuell; startzeit\n" + new_content
-
+        sha = None
     else:
         st.error(f"Fehler beim Abrufen der Datei: {get_response.status_code}")
         st.stop()
