@@ -89,7 +89,7 @@ if st.session_state.step == 0:
     st.markdown("Waren Sie während des Lesens gelangweilt?")
     st.markdown("Wie spannend fanden Sie den Comic?")
     st.markdown("Fanden Sie den Comic visuell ansprechend?")
-    
+
     if st.button("Weiter"):
         st.session_state.step += 1
         st.rerun()
@@ -158,7 +158,7 @@ elif 2 <= st.session_state.step <= max_step - 1:
                       ["1 (Gar nicht)", "2", "3", "4", "5 (Sehr)"],
                       key=f"q4_{item_index}")
         q5 = st.radio("Fanden Sie den Comic visuell ansprechend?",
-                      ["1 (Gar nicht), 2, 3, 4, 5 (Sehr)"],
+                      ["1 (Gar nicht)", "2", "3", "4", "5 (Sehr)"],
                       key=f"q5_{item_index}")
 
         if st.button("Weiter"):
@@ -177,12 +177,15 @@ elif 2 <= st.session_state.step <= max_step - 1:
                 st.session_state.gruppe,
                 item_index + 1,
                 current_image,
+                st.session_state.responses[item_index].get("bekanntheit", ""),
                 st.session_state.responses[item_index].get("beschreibung", ""),
-                q1,
-                q2,
-                q3,
-                q4,
-                q5,
+                st.session_state.responses[item_index].get("verständlichkeit",
+                                                           ""),
+                st.session_state.responses[item_index].get("geschwindigkeit",
+                                                           ""),
+                st.session_state.responses[item_index].get("langeweile", ""),
+                st.session_state.responses[item_index].get("spannung", ""),
+                st.session_state.responses[item_index].get("visuell", ""),
                 st.session_state.startzeit
             ]
             st.session_state.antworten.append(antwort_row)
@@ -199,7 +202,7 @@ elif st.session_state.step >= max_step:
     # Neue Daten vorbereiten
     output_lines = []
     for row in st.session_state.antworten:
-        output_lines.append(",".join(map(str, row)))
+        output_lines.append(";".join(map(str, row))) 
     new_content = "\n".join(output_lines) + "\n"
 
     # Datei auf GitHub abrufen
@@ -218,8 +221,8 @@ elif st.session_state.step >= max_step:
         sha = existing['sha']
     elif get_response.status_code == 404:
         # Datei existiert noch nicht → neue Datei mit Header
-        combined_content = "timestamp; vp_nummer; englisch_level; gruppe; comic_index; filename; bekanntheit; inhalt; verständlichkeit; geschwindigkeit; langeweile; spannung; visuell; startzeit\n" + new_content
-        sha = None
+        ccombined_content = "timestamp; vp_nummer; englisch_level; gruppe; comic_index; filename; bekanntheit; inhalt; verständlichkeit; geschwindigkeit; langeweile; spannung; visuell; startzeit\n" + new_content
+
     else:
         st.error(f"Fehler beim Abrufen der Datei: {get_response.status_code}")
         st.stop()
