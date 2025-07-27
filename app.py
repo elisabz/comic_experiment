@@ -55,7 +55,7 @@ if "gruppe" in st.session_state and st.session_state.step >= 2:
     if os.path.exists(image_folder):
         image_files = sorted([
             f for f in os.listdir(image_folder)
-            if f.lower().endswith(".jpg") and f.startswith(f"{st.session_state.gruppe}_")
+            if f.lower().endswith(".png") and f.startswith(f"{st.session_state.gruppe}_")
         ])
     else:
         st.error("Der Ordner 'images' fehlt. Bitte lade ihn ins Repository.")
@@ -75,13 +75,18 @@ if st.session_state.step == 0:
 
     Bitte lesen Sie die Inhalte aufmerksam und beantworten Sie die Fragen aufrichtig.
     """)
-    st.image("images/beispiel.jpg", caption="Beispielcomic (nicht Teil des Experiments)")
+    #st.image("images/beispiel.png", caption="Beispielcomic (nicht Teil des Experiments)")
     st.markdown("""
     Die Aufgaben, die Sie zu jedem Comic bekommen sind folgende:
+    
     Bitte beschreiben Sie den Inhalt des Comics in einem Satz.
+    
     War der Comic inhaltlich verständlich?
+    
     Wie schnell konnten Sie den Comic verstehen?
+    
     Waren Sie während des Lesens gelangweilt?
+    
     Wie spannend fanden Sie den Comic?
     """)
     if st.button("Weiter"):
