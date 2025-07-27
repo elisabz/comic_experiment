@@ -202,7 +202,7 @@ elif st.session_state.step >= max_step:
     # Neue Daten vorbereiten
     output_lines = []
     for row in st.session_state.antworten:
-        output_lines.append(";".join(map(str, row))) 
+        output_lines.append(";".join(map(str, row)))
     new_content = "\n".join(output_lines) + "\n"
 
     # Datei auf GitHub abrufen
@@ -221,7 +221,7 @@ elif st.session_state.step >= max_step:
         sha = existing['sha']
     elif get_response.status_code == 404:
         # Datei existiert noch nicht → neue Datei mit Header
-        ccombined_content = "timestamp; vp_nummer; englisch_level; gruppe; comic_index; filename; bekanntheit; inhalt; verständlichkeit; geschwindigkeit; langeweile; spannung; visuell; startzeit\n" + new_content
+        combined_content = "timestamp; vp_nummer; englisch_level; gruppe; comic_index; filename; bekanntheit; inhalt; verständlichkeit; geschwindigkeit; langeweile; spannung; visuell; startzeit\n" + new_content
 
     else:
         st.error(f"Fehler beim Abrufen der Datei: {get_response.status_code}")
