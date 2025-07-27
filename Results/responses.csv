@@ -1,0 +1,7 @@
+timestamp; vp_nummer; englisch_level; gruppe; comic_index; filename; bekanntheit; inhalt; verständlichkeit; geschwindigkeit; langeweile; spannung; visuell; startzeit
+2025-07-27T21:49:28.184011;VP3971;Sehr gut;B;1;B_comic1.png;Nein;try 1;1 (Stimme überhaupt nicht zu);2;3;4;5 (Sehr);2025-07-27T21:49:17.025157
+2025-07-27T21:49:42.428861;VP3971;Sehr gut;B;2;B_comic2.png;Ja;try 2;2;3;4;5 (Sehr);1 (Gar nicht);2025-07-27T21:49:17.025157
+2025-07-27T21:50:04.892874;VP3971;Sehr gut;B;3;B_comic3.png;Nein;try 3;3;4;5 (Sehr);1 (Gar nicht);2;2025-07-27T21:49:17.025157
+2025-07-27T21:50:19.843578;VP3971;Sehr gut;B;4;B_comic4.png;Nein;try 4;4;5 (Sehr schnell);1 (Gar nicht);2;3;2025-07-27T21:49:17.025157
+2025-07-27T21:50:34.033905;VP3971;Sehr gut;B;5;B_comic5.png;Ja;try 5;5 (Stimme voll zu);1 (Sehr langsam);2;3;4;2025-07-27T21:49:17.025157
+2025-07-27T21:50:53.495553;VP3971;Sehr gut;B;6;B_comic6.png;Nein;try 6;5 (Stimme voll zu);4;3;2;1 (Gar nicht);2025-07-27T21:49:17.025157
