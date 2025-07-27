@@ -84,13 +84,12 @@ if st.session_state.step == 0:
     
     st.markdown("""Bitte beschreiben Sie den Inhalt des Comics in einem Satz.""")
     
-    st.markdown("""War der Comic inhaltlich verständlich?""")
+    st.markdown("War der Comic inhaltlich verständlich?")
+    st.markdown("Wie schnell konnten Sie den Comic verstehen?")
+    st.markdown("Waren Sie während des Lesens gelangweilt?")
+    st.markdown("Wie spannend fanden Sie den Comic?")
+    st.markdown("Fanden Sie den Comic visuell ansprechend?")
     
-    st.markdown("""Wie schnell konnten Sie den Comic verstehen?""")
-    
-    st.markdown("""Waren Sie während des Lesens gelangweilt?""")
-    
-    st.markdown("""Wie spannend fanden Sie den Comic?""")
     if st.button("Weiter"):
         st.session_state.step += 1
         st.rerun()
@@ -159,7 +158,8 @@ elif 2 <= st.session_state.step <= max_step - 1:
                       ["1 (Gar nicht)", "2", "3", "4", "5 (Sehr)"],
                       key=f"q4_{item_index}")
         q5 = st.radio("Fanden Sie den Comic visuell ansprechend?",
-                      ["1 (Gar nicht), 2, 3, 4, 5 (Sehr)"])
+                      ["1 (Gar nicht), 2, 3, 4, 5 (Sehr)"],
+                      key=f"q5_{item_index}")
 
         if st.button("Weiter"):
             st.session_state.responses[item_index].update({
