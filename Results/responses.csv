@@ -29,3 +29,9 @@ timestamp; vp_nummer; englisch_level; gruppe; comic_index; filename; bekanntheit
 2025-07-28T13:02:51.275488;VP5305;Mittel;C;4;C_comic4.png;Nein;Zwei Kreaturen bekämpfen sich, obwohl der Eine dem Anderen helfen möchte;2;2;3;2;2;2025-07-28T12:54:54.400368
 2025-07-28T13:04:33.001600;VP5305;Mittel;C;5;C_comic5.png;Nein;Ein Person hilft einer anderen Person, die beim Flyer aufhängen einen Flyer verliert.;4;3;2;2;3;2025-07-28T12:54:54.400368
 2025-07-28T13:06:39.498699;VP5305;Mittel;C;6;C_comic6.png;Nein;Zwei Superhelden kämpfen und reden über ihre tragische Vergangenheit;2;3;2;2;2;2025-07-28T12:54:54.400368
+2025-07-28T12:58:37.314346;VP6535;Sehr gut;A;1;A_comic1.png;Nein;Ein Gefangener Zeitreisender wird transportiert.;3;3;4;3;2;2025-07-28T12:55:23.530223
+2025-07-28T13:01:28.148682;VP6535;Sehr gut;A;2;A_comic2.png;Nein;Kryptonian droht ihrem Gegner, der sie in einer Flasche gefangen hält.;5 (Stimme voll zu);4;2;4;4;2025-07-28T12:55:23.530223
+2025-07-28T13:03:33.452804;VP6535;Sehr gut;A;3;A_comic3.png;Nein;Lex Luthor will X-el helfen, aber dieser lehnt seine Hilfe ab.;1 (Stimme überhaupt nicht zu);4;1 (Gar nicht);4;5 (Sehr);2025-07-28T12:55:23.530223
+2025-07-28T13:04:16.435229;VP6535;Sehr gut;A;4;A_comic4.png;Nein;Superman hilft einem Kyptonen;5 (Stimme voll zu);5 (Sehr schnell);3;1 (Gar nicht);2;2025-07-28T12:55:23.530223
+2025-07-28T13:05:00.789312;VP6535;Sehr gut;A;5;A_comic5.png;Nein;Zwei Leute hängen Flugblätter auf und unterhalten sich;1 (Stimme überhaupt nicht zu);5 (Sehr schnell);5 (Sehr);5 (Sehr);5 (Sehr);2025-07-28T12:55:23.530223
+2025-07-28T13:06:56.987846;VP6535;Sehr gut;A;6;A_comic6.png;Nein;Ein Superheld muss Metropolis verlassen um rauszufinden, wer er ist.;1 (Stimme überhaupt nicht zu);5 (Sehr schnell);2;2;2;2025-07-28T12:55:23.530223
